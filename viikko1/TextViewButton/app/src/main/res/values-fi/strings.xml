@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TextViewButton</string>
+    <string name="click_to_say_hello">Paina sanoaksesi terve!</string>
+    <string name="say_hello">SANO TERVE!</string>
+    <string name="hello_world">Terve maailma!</string>
+    <string name="vertti_s_app">Vertin sovellus</string>
+</resources>

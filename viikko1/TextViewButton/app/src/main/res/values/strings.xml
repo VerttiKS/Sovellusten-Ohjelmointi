@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">TextViewButton</string>
+    <string name="click_to_say_hello">Click to say hello!</string>
+    <string name="say_hello">SAY HELLO!</string>
+    <string name="hello_world">Hello World!</string>
+    <string name="vertti_s_app">Vertti\'s app</string>
+</resources>
