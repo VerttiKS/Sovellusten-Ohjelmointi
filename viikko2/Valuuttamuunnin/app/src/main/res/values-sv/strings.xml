@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Valutaomvandlare</string>
+    <string name="switchDefaultText">Växla</string>
+    <string name="defaultBackButtonText">Tillbaka</string>
+    <string name="defaultConvertButtonText">Konvertera</string>
+</resources>

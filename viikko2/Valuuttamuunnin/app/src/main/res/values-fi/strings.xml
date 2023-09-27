@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Valuuttamuunnin</string>
+    <string name="switchDefaultText">Vaihda</string>
+    <string name="defaultBackButtonText">Takaisin</string>
+    <string name="defaultConvertButtonText">Muuta</string>
+</resources>
