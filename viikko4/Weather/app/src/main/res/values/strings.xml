@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Weather</string>
+    <string name="cityButton">Set city</string>
+    <string name="tampere">Tampere</string>
+    <string name="weather_app">Weather App</string>
+    <string name="wind_0_m_s">Wind: 0 m/s</string>
+    <string name="temp_0_c">Temp: 0°C</string>
+    <string name="todo">TODO</string>
+    <string name="city_tampere">City: Tampere</string>
+    <color name="darkBlue">#154c79</color>
+    <color name="niceWhite">#eeeee4</color>
+</resources>
