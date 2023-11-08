@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">DeviceApiXYZ</string>
+    <string name="lat_long">"Lat: \nLong:"</string>
+    <string name="current_location">Current location:</string>
+    <string name="x_y_z">"X: \nY: \nZ":</string>
+    <string name="sensors">Sensors:</string>
+    <string name="start_gps">Start GPS</string>
+    <string name="start_sensors">Start sensors</string>
+</resources>
