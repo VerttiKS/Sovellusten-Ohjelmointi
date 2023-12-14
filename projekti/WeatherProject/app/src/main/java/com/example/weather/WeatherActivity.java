@@ -33,36 +33,86 @@ import java.net.URL;
 
 public class WeatherActivity extends AppCompatActivity {
 
+    private LocationManager locationManager;
+
+    //Setting variables
+    private String cityName = "Tampere";
+    private boolean useGPS = false;
+    private boolean useFahrenheit = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
+
+        // Get intent extras
+        Bundle extras = getIntent().getExtras();
+
+        // This happens, if we flip the screen, if it doesn't happen, we get "extras" Bundle from MainActivity
+        if(savedInstanceState != null)
+        {
+            cityName = savedInstanceState.getString("CITY_NAME", "Tampere");
+            useGPS = savedInstanceState.getBoolean("USE_GPS", false);
+            useFahrenheit = savedInstanceState.getBoolean("USE_FAHRENHEIT", false);
+
+        } else if (extras != null) {
+            cityName = extras.getString("INPUT_LOCATION", "Tampere");
+            useGPS = extras.getBoolean("GPS_ACTIVATED", false);
+            useFahrenheit = extras.getBoolean("FAHRENHEIT_ACTIVATED", false);
+        }
+
+        //Here we decide what to do based on the GPS
+        if(useGPS)
+        {
+            startGPS();
+        }
+        else
+        {
+            weatherAPI(false);
+        }
     }
 
-    public void weatherAPI(View view){
+    //If we flip the screen, the info won't go away
+    @Override
+    protected void onSaveInstanceState (Bundle bundle){
+        super.onSaveInstanceState(bundle);
+        bundle.putString("CITY_NAME", cityName);
+        bundle.putBoolean("USE_GPS", useGPS);
+        bundle.putBoolean("USE_FAHRENHEIT", useFahrenheit);
+    }
+
+    public void weatherAPI(boolean fromGPS){
 
         //Get API key (this won't be in the git)
         String KEY = Keys.API_KEY;
 
         //Set city
-        //EditText cityEdit = findViewById(R.id.editCityName);
-        //String city = cityEdit.getText().toString();
-        String city = "Tampere";
+        String city = cityName;
 
+        //Default city name to Tampere incase of problems
         if(city == null || city == "")
         {
             city = "Tampere";
         }
 
-        //Get localization
-        String languageKey = getString(R.string.languageCode);
-        String units = getString(R.string.units);
+        //Basically, if we don't get our string from the GPS, we need to add this to tell the API it's a city name
+        if(!fromGPS)
+        {
+            city = "q=" + city;
+        }
 
-        TextView cityName = findViewById(R.id.textCity);
-        cityName.setText(city);
+        //Here we get the languageKey and set the unit to metric
+        String languageKey = getString(R.string.languageCode);
+        String units = "metric";
+
+        //If we're using fahrenheit, change the unit to imperials
+        if(useFahrenheit)
+        {
+            units = "imperial";
+        }
 
         //Get the URL ready and send it for parsing
-        String API_URL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + KEY + "&units=" + units + "&lang=" + languageKey;
+        String API_URL = "https://api.openweathermap.org/data/2.5/weather?" + city + KEY + "&units=" + units + "&lang=" + languageKey;
 
         StringRequest request = new StringRequest(Request.Method.GET, API_URL, response -> {
 
@@ -79,29 +129,42 @@ public class WeatherActivity extends AppCompatActivity {
         try {
             JSONObject weatherJSON = new JSONObject(response);
 
-            //Get units
-            String temp_unit = getString(R.string.temp_unit);
-            String wind_unit = getString(R.string.wind_unit);
+            //Setup unit names
+            String temp_unit = "°C";
+            String wind_unit = " m/s";
 
-            //Set temperature
+            //If we're using fahrenheit, change the unit to imperials
+            if(useFahrenheit)
+            {
+                temp_unit = "°F";
+                wind_unit = " mph";
+            }
+
+            //Get and set temperature
             double temperature = weatherJSON.getJSONObject("main").getDouble("temp");
 
             TextView temperatureText = findViewById(R.id.textTemp);
             temperatureText.setText(temperature + temp_unit);
 
-            //Set wind
+            //Get and set wind
             double wind = weatherJSON.getJSONObject("wind").getDouble("speed");
 
             TextView windText = findViewById(R.id.textWind);
             windText.setText(wind + wind_unit);
 
-            //Set description
+            //Get and set name
+            String locationName = weatherJSON.getString("name");
+
+            TextView locationText = findViewById(R.id.textCity);
+            locationText.setText(locationName);
+
+            //Get and set description
             String weatherDescription = weatherJSON.getJSONArray("weather").getJSONObject(0).getString("description");
 
             TextView descriptionText = findViewById(R.id.textDescription);
             descriptionText.setText(weatherDescription);
 
-            //Set image
+            //Get and set image (picasso helps)
             String imageURLData = weatherJSON.getJSONArray("weather").getJSONObject(0).getString("icon");
             String imageURL = "https://openweathermap.org/img/wn/" + imageURLData + "@2x.png";
 
@@ -113,7 +176,7 @@ public class WeatherActivity extends AppCompatActivity {
         }
     }
 
-    public void startGPS(View view) {
+    public void startGPS() {
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -128,14 +191,31 @@ public class WeatherActivity extends AppCompatActivity {
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Location currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
+        //Here we set the first location as the lastKnown location (we use live location afterwards)
+        if(currentLocation != null)
+        {
+            double latitude = currentLocation.getLatitude();
+            double longitude = currentLocation.getLongitude();
+
+            //We set the location to the cityName. It'll be used in the url of the weatherAPI
+            String gpsLocation = "lat=" + latitude + "&lon=" + longitude;
+            cityName = gpsLocation;
+
+            weatherAPI(true);
+        }
+
+        //Here we move on to the live location
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, new LocationListener() {
             @Override
             public void onLocationChanged(@NonNull Location location) {
                 double latitude = location.getLatitude();
                 double longitude = location.getLongitude();
 
-                //TextView LatLongtextView = findViewById(R.id.coordinates);
-                //LatLongtextView.setText("Lat: " + latitude + "\nLong: " + longitude);
+                //We set the location to the cityName. It'll be used in the url of the weatherAPI
+                String gpsLocation = "lat=" + latitude + "&lon=" + longitude;
+                cityName = gpsLocation;
+
+                weatherAPI(true);
             }
         });
     }

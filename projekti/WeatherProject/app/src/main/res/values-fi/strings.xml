@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Sää</string>
+    <string name="button">Aseta</string>
+    <string name="weather_app">Sää Sovellus</string>
+    <string name="languageCode">fi</string>
+    <string name="coolImage">Kuva, joka on tiedon takana. Se saa sovelluksen näyttämään paremmalta</string>
+    <string name="editTextLocation">Paikan nimi</string>
+    <string name="switchGPS">Käytä GPS</string>
+    <string name="switchFahrenheit">Käytä Fahrenheitteja</string>
+</resources>

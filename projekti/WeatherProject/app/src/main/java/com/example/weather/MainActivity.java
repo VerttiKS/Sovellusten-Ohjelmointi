@@ -3,11 +3,13 @@ package com.example.weather;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,78 +32,33 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
+    public void startWeather(View view) {
+        //Choose the WeatherActivity as our location
+        Intent intent = new Intent(this, WeatherActivity.class);
 
-    public void weatherAPI(View view){
+        //Create bundle
+        Bundle extras = new Bundle();
 
-        //Get API key (this won't be in the git)
-        String KEY = Keys.API_KEY;
+        //Bundle the location input text
+        EditText inputSettingText = findViewById(R.id.editCityName);
+        String inputLocation = inputSettingText.getText().toString();
+        extras.putString("INPUT_LOCATION", inputLocation);
 
-        //Set city
-        //EditText cityEdit = findViewById(R.id.editCityName);
-        //String city = cityEdit.getText().toString();
-        String city = "Tampere";
+        //Bundle the GPS switch status
+        Switch switchGPS = findViewById(R.id.switchGPS);
+        boolean gpsActivated = switchGPS.isChecked();
+        extras.putBoolean("GPS_ACTIVATED", gpsActivated);
 
-        if(city == null || city == "")
-        {
-            city = "Tampere";
-        }
+        //Bundle the Fahrenheit switch status
+        Switch switchFah = findViewById(R.id.switchFahrenheit);
+        boolean fahActivated = switchFah.isChecked();
+        extras.putBoolean("FAHRENHEIT_ACTIVATED", fahActivated);
 
-        //Get localization
-        String languageKey = getString(R.string.languageCode);
-        String units = getString(R.string.units);
+        //Prepare to send "extras" bundles to WeatherActivity
+        intent.putExtras(extras);
 
-        TextView cityName = findViewById(R.id.textCity);
-        cityName.setText(city);
-
-        //Get the URL ready and send it for parsing
-        String API_URL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + KEY + "&units=" + units + "&lang=" + languageKey;
-
-        StringRequest request = new StringRequest(Request.Method.GET, API_URL, response -> {
-
-            ParseJsonUpdateUI(response);
-        }, error -> {
-            Toast.makeText(this, "API ERROR", Toast.LENGTH_LONG).show();
-        });
-
-        Volley.newRequestQueue(this).add(request);
+        // Go to WeatherActivity and send extras to it
+        startActivity(intent);
     }
 
-    private void ParseJsonUpdateUI(String response)
-    {
-        try {
-            JSONObject weatherJSON = new JSONObject(response);
-
-            //Get units
-            String temp_unit = getString(R.string.temp_unit);
-            String wind_unit = getString(R.string.wind_unit);
-
-            //Set temperature
-            double temperature = weatherJSON.getJSONObject("main").getDouble("temp");
-
-            TextView temperatureText = findViewById(R.id.textTemp);
-            temperatureText.setText(temperature + temp_unit);
-
-            //Set wind
-            double wind = weatherJSON.getJSONObject("wind").getDouble("speed");
-
-            TextView windText = findViewById(R.id.textWind);
-            windText.setText(wind + wind_unit);
-
-            //Set description
-            String weatherDescription = weatherJSON.getJSONArray("weather").getJSONObject(0).getString("description");
-
-            TextView descriptionText = findViewById(R.id.textDescription);
-            descriptionText.setText(weatherDescription);
-
-            //Set image
-            String imageURLData = weatherJSON.getJSONArray("weather").getJSONObject(0).getString("icon");
-            String imageURL = "https://openweathermap.org/img/wn/" + imageURLData + "@2x.png";
-
-            ImageView image = findViewById(R.id.imageW);
-            Picasso.get().load(imageURL).resize(320,320).into(image);
-
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }

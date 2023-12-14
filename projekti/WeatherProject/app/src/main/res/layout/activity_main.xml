@@ -7,37 +7,13 @@
     android:background="@color/darkBlue"
     tools:context=".MainActivity">
 
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="0dp"
-        android:layout_height="46dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageW"
-        app:layout_constraintTop_toBottomOf="@+id/textCity"
-        app:srcCompat="@drawable/background2" />
-
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="0dp"
-        android:layout_height="46dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="19dp"
-        android:layout_marginEnd="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageW"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3"
-        app:srcCompat="@drawable/background2" />
-
     <Button
         android:id="@+id/button"
         android:layout_width="0dp"
         android:layout_height="67dp"
         android:layout_marginStart="40dp"
         android:layout_marginEnd="40dp"
-        android:onClick="weatherAPI"
+        android:onClick="startWeather"
         android:text="@string/button"
         android:textAllCaps="false"
         android:textColor="@color/niceWhite"
@@ -45,7 +21,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textDescription" />
+        app:layout_constraintTop_toBottomOf="@+id/switchFahrenheit" />
 
     <TextView
         android:id="@+id/textCity"
@@ -55,69 +31,66 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="24dp"
         android:gravity="bottom|center"
-        android:text="@string/city_tampere"
-        android:textAlignment="gravity"
+        android:text="@string/weather_app"
+        android:textAlignment="center"
+        android:textAllCaps="false"
         android:textColor="@color/niceWhite"
         android:textSize="44sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textTemp"
+    <EditText
+        android:id="@+id/editCityName"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_height="67dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="24dp"
-        android:text="@string/temp_0_c"
+        android:background="@drawable/background"
+        android:ems="10"
+        android:inputType="text"
+        android:text="@string/editTextLocation"
         android:textAlignment="center"
-        android:textColor="@color/niceWhite"
-        android:textSize="34sp"
+        android:textColor="@color/black"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageW"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textCity" />
 
-    <TextView
-        android:id="@+id/textWind"
+    <Switch
+        android:id="@+id/switchGPS"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="19dp"
-        android:layout_marginEnd="24dp"
-        android:text="@string/wind_0_m_s"
-        android:textAlignment="center"
-        android:textColor="@color/niceWhite"
-        android:textSize="34sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageW"
-        app:layout_constraintTop_toBottomOf="@+id/textTemp" />
-
-    <TextView
-        android:id="@+id/textDescription"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp"
-        android:text="@string/broken_clouds"
-        android:textAlignment="center"
-        android:textColor="@color/niceWhite"
-        android:textSize="34sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textWind" />
-
-    <ImageView
-        android:id="@+id/imageW"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_height="67dp"
+        android:layout_marginStart="48dp"
         android:layout_marginTop="32dp"
-        android:background="@drawable/background"
-        android:contentDescription="@string/todo"
+        android:layout_marginEnd="48dp"
+        android:text="@string/switchGPS"
+        android:textAlignment="center"
+        android:textColor="@color/niceWhite"
+
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textCity"
-        app:srcCompat="@drawable/ic_launcher_foreground" />
+        app:layout_constraintTop_toBottomOf="@+id/editCityName"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+    <Switch
+        android:id="@+id/switchFahrenheit"
+        android:layout_width="0dp"
+        android:layout_height="67dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="48dp"
+        android:text="@string/switchFahrenheit"
+        android:textAlignment="center"
+
+        android:textColor="@color/niceWhite"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/switchGPS"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

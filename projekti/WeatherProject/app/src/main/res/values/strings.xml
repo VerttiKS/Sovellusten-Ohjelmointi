@@ -1,17 +1,19 @@
 <resources>
     <string name="app_name">Weather</string>
-    <string name="button">Settings</string>
-    <string name="tampere">Tampere</string>
+    <string name="button">Apply</string>
+    <string name="tampere" translatable="false">Tampere</string>
     <string name="weather_app">Weather App</string>
-    <string name="wind_0_m_s">0 m/s</string>
-    <string name="temp_0_c">0°C</string>
-    <string name="todo">TODO</string>
-    <string name="city_tampere">Tampere</string>
-    <string name="temp_unit">°C</string>
-    <string name="wind_unit">m/s</string>
+    <string name="wind_0_m_s" translatable="false">0 m/s</string>
+    <string name="temp_0_c" translatable="false">0°C</string>
+    <string name="todo" translatable="false">TODO</string>
+    <string name="city_tampere" translatable="false">Tampere</string>
+    <string name="temp_unit" translatable="false">°C</string>
+    <string name="wind_unit" translatable="false">m/s</string>
     <string name="languageCode">en</string>
-    <string name="units">metric</string>
-    <string name="broken_clouds">broken clouds</string>
-    <color name="darkBlue">#154c79</color>
-    <color name="niceWhite">#eeeee4</color>
+    <string name="units" translatable="false">metric</string>
+    <string name="broken_clouds" translatable="false">broken clouds</string>
+    <string name="coolImage">stands behind the info, making it look cooler</string>
+    <string name="editTextLocation">Location name</string>
+    <string name="switchGPS">Use GPS instead</string>
+    <string name="switchFahrenheit">Use fahrenheit instead</string>
 </resources>
