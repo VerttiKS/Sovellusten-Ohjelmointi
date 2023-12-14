@@ -71,6 +71,15 @@ public class MainActivity extends AppCompatActivity {
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Location currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
+        if(currentLocation != null)
+        {
+            double latitude = currentLocation.getLatitude();
+            double longitude = currentLocation.getLongitude();
+
+            TextView LatLongtextView = findViewById(R.id.coordinates);
+            LatLongtextView.setText("Lat: " + latitude + "\nLong: " + longitude);
+        }
+
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, new LocationListener() {
             @Override
             public void onLocationChanged(@NonNull Location location) {
